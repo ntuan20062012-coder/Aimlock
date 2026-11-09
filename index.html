@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Aimlock</title>
+<style>
+  :root {
+    --bg: #121212; --card: #1c1c1e; --text: #ffffff; --sub: #8e8e93;
+    --accent: #7878ff; --line: #2c2c2e; --btn-off: #333333;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--text); height: 100vh; height: -webkit-fill-available; overflow: hidden; display: flex; flex-direction: column; padding-top: env(safe-area-inset-top); }
+  
+  /* HEADER */
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; }
+  .h-left { display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #7c4dff, #448aff); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+  .h-title { font-size: 16px; font-weight: 600; }
+  .h-sub { font-size: 12px; color: var(--sub); margin-top: 2px; }
+  .h-right { text-align: right; font-size: 12px; }
+  .status-live { color: #32d74b; display: flex; align-items: center; gap: 4px; justify-content: flex-end; font-weight: 500; }
+  .status-live::before { content: ''; width: 6px; height: 6px; background: #32d74b; border-radius: 50%; }
+  .status-count { color: var(--sub); margin-top: 4px; }
+
+  /* NAV TABS */
+  .nav-tabs { display: flex; padding: 0 20px; border-bottom: 1px solid var(--line); gap: 24px; }
+  .tab { padding: 12px 0; font-size: 14px; font-weight: 500; color: var(--sub); cursor: pointer; position: relative; }
+  .tab.active { color: #a6a6ff; }
+  .tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--accent); border-radius: 2px; }
+
+  /* CONTENT */
+  .content { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; }
+  .section-title { font-size: 12px; font-weight: 600; color: var(--sub); text-transform: uppercase; display: flex; justify-content: space-between; margin-bottom: 10px; margin-top: 10px; letter-spacing: 0.5px; }
+
+  .card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .row:last-child { margin-bottom: 0; }
+  .row-info { display: flex; flex-direction: column; gap: 4px; }
+  .row-title { font-size: 15px; font-weight: 500; }
+  .row-sub { font-size: 12px; color: var(--sub); }
+  
+  /* SLIDER */
+  .slider-group { margin-bottom: 20px; }
+  .slider-header { display: flex; justify-content: space-between; font-size: 15px; font-weight: 500; margin-bottom: 16px; }
+  input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+  input[type=range]:focus { outline: none; }
+  input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #333; border-radius: 2px; }
+  input[type=range]::-webkit-slider-thumb { height: 20px; width: 20px; border-radius: 50%; background: #fff; cursor: pointer; -webkit-appearance: none; margin-top: -8px; }
+
+  /* TOGGLE SWITCH */
+  .sw { width: 50px; height: 28px; background: var(--btn-off); border-radius: 14px; position: relative; cursor: pointer; transition: .2s; flex-shrink: 0; }
+  .sw::after { content: ''; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; background: #fff; border-radius: 50%; transition: .2s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+  .sw.on { background: var(--accent); }
+  .sw.on::after { left: 24px; }
+
+  /* SEGMENT CONTROL (GHIM) */
+  .segment-container { margin-bottom: 16px; }
+  .segment-title { font-size: 15px; font-weight: 500; margin-bottom: 12px; }
+  .segment { display: flex; background: #2c2c2e; border-radius: 8px; padding: 2px; }
+  .seg-item { flex: 1; text-align: center; padding: 8px 0; font-size: 14px; font-weight: 500; color: var(--sub); border-radius: 6px; cursor: pointer; transition: .2s; }
+  .seg-item.active { background: #48484a; color: #fff; }
+
+  /* FOOTER */
+  .footer { display: flex; gap: 12px; padding: 16px 20px; border-top: 1px solid var(--line); background: var(--bg); padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .btn { flex: 1; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 600; text-align: center; border: none; }
+  .btn-reset { background: #2c2c2e; color: #fff; cursor: pointer; }
+  .btn-sync { background: #2c2c2e; color: var(--sub); cursor: default; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="h-left">
+    <div class="avatar">tb</div>
+    <div>
+      <div class="h-title">haap xtoibivosinh</div>
+      <div class="h-sub">FF Menu · 14 fix</div>
+    </div>
+  </div>
+  <div class="h-right">
+    <div class="status-live">Live</div>
+    <div class="status-count" id="active-count">12 đang bật</div>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <div class="tab active">Aim</div>
+  <div class="tab">ESP</div>
+  <div class="tab">Combat</div>
+  <div class="tab">Skin</div>
+  <div class="tab">Hệ thống</div>
+</div>
+
+<div class="content">
+  <div class="section-title">
+    <span>Aim assist</span>
+    <span>1/7</span>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div class="row-info">
+        <div class="row-title">Silent Aim</div>
+        <div class="row-sub">Bẻ hướng camera</div>
+      </div>
+      <div class="sw on" data-key="silent_aim"></div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span>Headshot rate</span>
+        <span id="val-hs">70%</span>
+      </div>
+      <input type="range" id="r-hs" min="0" max="100" value="70">
+    </div>
+
+    <div class="slider-group" style="margin-bottom: 0;">
+      <div class="slider-header">
+        <span>Silent radius</span>
+        <span id="val-radius">220m</span>
+      </div>
+      <input type="range" id="r-radius" min="10" max="500" value="220">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div class="row-info">
+        <div class="row-title">Aim Bot</div>
+        <div class="row-sub">Kéo tâm theo mục tiêu</div>
+      </div>
+      <div class="sw" data-key="aimbot"></div>
+    </div>
+    
+    <div class="row">
+      <div class="row-info">
+        <div class="row-title">Aimlegit</div>
+        <div class="row-sub">Camera bám mượt, không snap</div>
+      </div>
+      <div class="sw" data-key="aimlegit"></div>
+    </div>
+
+    <div class="row">
+      <div class="row-info">
+        <div class="row-title">Aim System</div>
+        <div class="row-sub">Chế độ gộp ổn định</div>
+      </div>
+      <div class="sw" data-key="aim_system"></div>
+    </div>
+  </div>
+
+  <div class="segment-container">
+    <div class="segment-title">Ghim</div>
+    <div class="segment">
+      <div class="seg-item">Thân</div>
+      <div class="seg-item">Cổ</div>
+      <div class="seg-item active">Đầu</div>
+    </div>
+  </div>
+  
+  <div class="section-title"><span>Mode</span></div>
+  <div class="card" style="height: 80px; display: flex; align-items: center; justify-content: center; color: #8e8e93;">
+    (Cấu hình bổ sung)
+  </div>
+</div>
+
+<div class="footer">
+  <button class="btn btn-reset" id="btn-reset">Đặt lại</button>
+  <button class="btn btn-sync">Đã đồng bộ</button>
+</div>
+
+<script>
+  // Toggle Switch
+  document.querySelectorAll('.sw').forEach(sw => {
+    sw.addEventListener('click', () => {
+      sw.classList.toggle('on');
+      updateCount();
+    });
+  });
+
+  // Sliders
+  const rHs = document.getElementById('r-hs');
+  const valHs = document.getElementById('val-hs');
+  rHs.addEventListener('input', (e) => valHs.textContent = e.target.value + '%');
+
+  const rRad = document.getElementById('r-radius');
+  const valRad = document.getElementById('val-radius');
+  rRad.addEventListener('input', (e) => valRad.textContent = e.target.value + 'm');
+
+  // Segment Control
+  document.querySelectorAll('.seg-item').forEach(seg => {
+    seg.addEventListener('click', () => {
+      document.querySelectorAll('.seg-item').forEach(s => s.classList.remove('active'));
+      seg.classList.add('active');
+    });
+  });
+
+  // Active Count Logic
+  function updateCount() {
+    const active = document.querySelectorAll('.sw.on').length;
+    document.getElementById('active-count').textContent = active + ' đang bật';
+  }
+  updateCount();
+
+  // Reset
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    document.querySelectorAll('.sw').forEach(s => s.classList.remove('on'));
+    rHs.value = 70; valHs.textContent = '70%';
+    rRad.value = 220; valRad.textContent = '220m';
+    document.querySelectorAll('.seg-item').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.seg-item')[2].classList.add('active');
+    updateCount();
+  });
+</script>
+</body>
+</html>
